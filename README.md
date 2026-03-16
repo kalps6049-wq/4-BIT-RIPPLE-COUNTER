@@ -22,19 +22,57 @@ In timing diagram Q0 is changing as soon as the negative edge of clock pulse is 
 
 ![image](https://github.com/naavaneetha/4-BIT-RIPPLE-COUNTER/assets/154305477/85e1958a-2fc1-49bb-9a9f-d58ccbf3663c)
 
-**Procedure**
+**Procedure:**
+Here’s a concise **procedure for a bit ripple counter** in 6–7 lines:
 
-/* write all the steps invloved */
+1. Connect the clock pulse generator to the first flip-flop (LSB).  
+2. Configure each flip-flop in toggle mode (T=1 or J=K=1).  
+3. Connect the Q output of one flip-flop to the clock input of the next stage.  
+4. Attach LEDs to each flip-flop’s Q output to observe binary states.  
+5. Switch on the trainer kit and apply clock pulses.  
+6. Observe that each flip-flop toggles when the previous one completes a cycle.  
+7. Record the binary counting sequence up to \(2^n\) for an n-bit counter.  
 
-**PROGRAM**
+**PROGRAM:**
+```
+module ripple (
+input clk, 
+input reset, 
+output [3:0] q 
+);
+reg [3:0] q_int;
+assign q = q_int;
+always @(posedge clk or posedge reset) begin
+if (reset)
+q_int[0] <= 1'b0; 
+else
+q_int[0] <= ~q_int[0]; 
+end
+genvar i;
+generate
+for (i = 1; i < 4; i = i + 1) begin : ripple
+always @(posedge q_int[i-1] or posedge reset) begin
+if (reset)
+q_int[i] <= 1'b0; 
+else
+q_int[i] <= ~q_int[i]; 
+end
+end
+endgenerate
+endmodule
+```
 
-/* Program for 4 Bit Ripple Counter and verify its truth table in quartus using Verilog programming.
 
- Developed by: RegisterNumber:
-*/
+ Developed by:KALPANA M
+  RegisterNumber:212225240064
 
-**RTL LOGIC FOR 4 Bit Ripple Counter**
 
-**TIMING DIGRAMS FOR 4 Bit Ripple Counter**
+**RTL LOGIC FOR 4 Bit Ripple Counter:**
+![alt text](<Screenshot 2026-03-16 154902.png>)
 
-**RESULTS**
+**TIMING DIGRAMS FOR 4 Bit Ripple Counter:**
+![alt text](<Screenshot 2026-03-16 154846.png>)
+
+
+**RESULTS:**
+Thus, the Bit Ripple Counter is designed and its functionality is validated using the truth table and timing diagrams.
